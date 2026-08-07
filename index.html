@@ -208,10 +208,12 @@
     </div>
 
     <script>
+        // Đã cập nhật sang repository mới: severkey-q
         const DATA_SOURCES = [
-    "https://cdn.jsdelivr.net/gh/Hieu-e88/severkey-q@main/Maxacthuc.txt",
-    "https://raw.githubusercontent.com/Hieu-e88/severkey-q/main/Maxacthuc.txt"
-];
+            "https://cdn.jsdelivr.net/gh/Hieu-e88/severkey-q@main/maxacthuc.txt",
+            "https://raw.githubusercontent.com/Hieu-e88/severkey-q/main/Maxacthuc.txt"
+        ];
+
         let timerInterval = null;
         let activeFullKey = "";
 
@@ -273,7 +275,6 @@
                     localStorage.setItem('expire_time_' + inputKey, expireTime);
                 }
 
-                // KHÔNG LƯU user_input_code nữa, nên khi load lại trang sẽ bắt buộc phải nhập lại từ đầu.
                 showAppUI(keyData.displayKey);
                 startTimer(parseInt(expireTime));
             } else {
@@ -386,9 +387,6 @@
             document.getElementById('user-key-display').innerText = key;
             setError('');
         }
-
-        // Đã xóa hoàn toàn sự kiện auto-login khi load lại trang (window.onload), 
-        // giờ đây mỗi khi mở lại web sẽ bắt buộc đứng ở form nhập mã từ đầu.
     </script>
 </body>
 </html>
