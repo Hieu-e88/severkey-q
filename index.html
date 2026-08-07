@@ -243,11 +243,14 @@
 
         /**
          * Tìm và xác thực một key/mã trong danh sách dòng tải về.
-         * Trả về { valid, message } hoặc { valid: true, displayKey, daysAllowed }.
+         * Trả về { valid, message } hoặc { valid: true, code, displayKey, daysAllowed }.
+         * `code` là mã định danh ổn định (cột đầu tiên) — dùng làm khóa lưu phiên đăng nhập,
+         * để phiên không bị mất khi admin đổi key qua Termux (chỉ cột key thay đổi, code giữ nguyên).
          */
         function validateKeyStatus(userKey, rawLines) {
             const target = userKey.trim().toLowerCase();
             let foundLine = null;
+            let matchedCode = null;
             let notice = null;
             let expired = false;
 
@@ -258,13 +261,13 @@
                     const [noticeCode, ...rest] = lowerLine.slice(3).split('|').map((p) => p.trim());
                     if (noticeCode === target) {
                         foundLine = rawLine;
+                        matchedCode = noticeCode;
                         notice = rest[0] || 'Đã bị ngắt kết nối!';
                         break;
                     }
                     continue;
                 }
 
-                const parts = rawLine.split('|').map((p) => p.trim());
                 const lowerParts = lowerLine.split('|').map((p) => p.trim());
                 const codePart = lowerParts[0] || '';
                 const keyPart = lowerParts[1] || lowerParts[0];
@@ -272,6 +275,7 @@
                 const candidates = new Set([codePart, keyPart, stripSuffix(codePart), stripSuffix(keyPart)]);
                 if (candidates.has(target)) {
                     foundLine = rawLine;
+                    matchedCode = codePart;
                     expired = lowerLine.includes('#hết hạn') || lowerLine.includes('#đã sử dụng');
                     break;
                 }
@@ -287,7 +291,7 @@
             const daysAllowed = durationMatch ? parseInt(durationMatch[1], 10) : 1;
             const displayKey = stripSuffix(fullRawKey.split('.keytrial.')[0]);
 
-            return { valid: true, displayKey, daysAllowed };
+            return { valid: true, code: matchedCode, displayKey, daysAllowed };
         }
 
         function storageKeysFor(code) {
@@ -327,7 +331,10 @@
                 logout(result.message);
                 return;
             }
-            const expireTime = persistSession(inputKey, result.displayKey, result.daysAllowed, isNewLogin);
+            // Dùng result.code (mã ổn định) làm khóa lưu phiên, không dùng inputKey trực tiếp —
+            // nhờ vậy nếu người dùng đăng nhập bằng key và admin đổi key qua Termux,
+            // phiên vẫn còn và key hiển thị tự cập nhật thay vì bị đăng xuất.
+            const expireTime = persistSession(result.code, result.displayKey, result.daysAllowed, isNewLogin);
             showAppUI(result.displayKey);
             startTimer(expireTime);
             startRealtimeCheck();
@@ -388,8 +395,21 @@
                 if (!savedCode) return;
                 const rawLines = await fetchKeyList();
                 if (!rawLines) return;
+
                 const result = validateKeyStatus(savedCode, rawLines);
-                if (!result.valid) logout(result.message);
+                if (!result.valid) {
+                    logout(result.message);
+                    return;
+                }
+
+                // Nếu admin đổi key qua Termux, cập nhật key hiển thị ngay — không chờ F5,
+                // và không đụng vào bộ đếm giờ đang chạy (giữ nguyên hạn dùng hiện tại).
+                if (result.displayKey !== activeFullKey) {
+                    const { key } = storageKeysFor(savedCode);
+                    localStorage.setItem(key, result.displayKey);
+                    activeFullKey = result.displayKey;
+                    els.userKeyDisplay.innerText = result.displayKey;
+                }
             }, REALTIME_CHECK_MS);
         }
 
