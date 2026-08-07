@@ -2,64 +2,447 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xác Thực Key</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HIEUNE SYSTEM - XÁC THỰC KEY</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body { background: #0b0f19; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: #171f30; padding: 20px; border-radius: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.1); }
-        input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: none; outline: none; font-size: 14px; box-sizing: border-box; }
-        input { background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-        button { background: #6366f1; color: #fff; font-weight: bold; cursor: pointer; }
-        #msg { text-align: center; font-size: 12px; margin-top: 10px; font-weight: bold; }
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #171f30;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --primary-color: #6366f1;
+            --copy-btn-bg: #2563eb;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            color: var(--text-main);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 360px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-area { text-align: center; margin-bottom: 16px; }
+        .logo-title { font-size: 20px; font-weight: 700; color: #a5b4fc; }
+        .logo-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+
+        .input-group { margin-bottom: 12px; }
+        .input-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary { background: var(--primary-color); color: #fff; }
+        .btn-copy { background: var(--copy-btn-bg); color: #fff; margin-top: 6px; }
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            margin-top: 8px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .status-dot { width: 5px; height: 5px; background: var(--success-color); border-radius: 50%; }
+
+        .key-wrapper { width: 100%; margin-bottom: 10px; }
+
+        .key-info-box {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            font-family: monospace;
+            color: #a5b4fc;
+            font-size: 11px;
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .time-box {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 8px;
+            padding: 8px;
+            color: #c7d2fe;
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        #error-msg {
+            font-size: 11px;
+            text-align: center;
+            margin-top: 8px;
+            min-height: 16px;
+            font-weight: 600;
+            color: var(--danger-color);
+            word-break: break-all;
+        }
+
+        .page-step { display: none; }
+        .page-step.active { display: block; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h3>XÁC THỰC BẢN QUYỀN</h3>
-        <input type="text" id="kInput" placeholder="Nhập mã hoặc key..." autocomplete="off">
-        <button onclick="doLogin()">Đăng Nhập</button>
-        <div id="msg"></div>
+
+    <div class="container">
+        <div class="logo-area">
+            <div class="logo-title">DEV: HIEUNE</div>
+            <div class="logo-sub">Hệ thống xác thực bản quyền Key VIP</div>
+        </div>
+
+        <div id="login-box" class="page-step active">
+            <div class="input-group">
+                <label class="input-label">MÃ XÁC THỰC / KEY</label>
+                <input type="text" id="key-input" class="custom-input" placeholder="Nhập key của bạn..." autocomplete="off">
+            </div>
+            <button class="btn btn-primary" id="login-btn">Đăng Nhập Ngay</button>
+        </div>
+
+        <div id="app-content" class="page-step">
+            <div style="text-align: center;">
+                <div class="status-badge"><span class="status-dot"></span> ĐANG HOẠT ĐỘNG</div>
+            </div>
+
+            <div class="input-label" style="text-align: left;">KEY CỦA BẠN:</div>
+
+            <div class="key-wrapper">
+                <div class="key-info-box" id="user-key-display">---</div>
+            </div>
+
+            <div class="time-box">
+                ⏱ <strong>Thời gian:</strong> <span id="time-remaining">Đang tính...</span>
+            </div>
+
+            <button class="btn btn-copy" id="copy-btn">📋 Sao Chép Key</button>
+            <button class="btn btn-danger" id="logout-btn">Đăng Xuất</button>
+        </div>
+
+        <div id="error-msg"></div>
     </div>
 
     <script>
-        async function doLogin() {
-            let val = document.getElementById('kInput').value.trim().toLowerCase();
-            let msg = document.getElementById('msg');
-            if(!val) { msg.style.color = "red"; msg.innerText = "Vui lòng nhập thông tin!"; return; }
-            
-            msg.style.color = "#a5b4fc"; msg.innerText = "Đang kiểm tra...";
+    (() => {
+        'use strict';
 
-            try {
-                let res = await fetch("https://raw.githubusercontent.com/Hieu-e88/severkey-q/main/Key.txt?t=" + Date.now());
-                let text = await res.text();
-                let lines = text.split('\n');
-                
-                let found = false;
-                for(let line of lines) {
-                    if(!line.trim()) continue;
-                    let parts = line.split('|').map(p => p.trim().toLowerCase());
-                    let code = parts[0] || "";
-                    let keyFull = parts[1] || "";
-                    let keyOnly = keyFull.split('#')[0].trim();
+        const DATA_SOURCES = [
+            'https://cdn.jsdelivr.net/gh/Hieu-e88/severkey-q@main/Key.txt',
+            'https://raw.githubusercontent.com/Hieu-e88/severkey-q/main/Key.txt',
+        ];
+        const REALTIME_CHECK_MS = 6000;
+        const STORAGE_PREFIX = { EXPIRE: 'expire_time_', KEY: 'key_content_', ACTIVE_CODE: 'user_input_code' };
 
-                    if(val === code || val === keyFull || val === keyOnly) {
-                        found = true;
+        const els = {
+            loginBox: document.getElementById('login-box'),
+            appContent: document.getElementById('app-content'),
+            keyInput: document.getElementById('key-input'),
+            userKeyDisplay: document.getElementById('user-key-display'),
+            timeRemaining: document.getElementById('time-remaining'),
+            copyBtn: document.getElementById('copy-btn'),
+            errorMsg: document.getElementById('error-msg'),
+        };
+
+        let checkIntervalId = null;
+        let timerIntervalId = null;
+        let activeFullKey = '';
+
+        const setError = (text, color = 'var(--danger-color)') => {
+            els.errorMsg.style.color = color;
+            els.errorMsg.innerText = text || '';
+        };
+
+        const stripSuffix = (value) => value.split('#')[0].split('.keytrial')[0].trim();
+
+        async function fetchKeyList() {
+            const cacheBust = `?t=${Date.now()}`;
+            for (const baseUrl of DATA_SOURCES) {
+                try {
+                    const res = await fetch(baseUrl + cacheBust, { cache: 'no-store' });
+                    if (!res.ok) continue;
+                    const text = await res.text();
+                    if (!text.trim()) continue;
+                    return text
+                        .replace(/\r/g, '')
+                        .split('\n')
+                        .map((l) => l.trim())
+                        .filter(Boolean);
+                } catch (err) {
+                    console.warn('Lỗi tải dữ liệu key:', err);
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Tìm và xác thực một key/mã trong danh sách dòng tải về.
+         * Trả về { valid, message } hoặc { valid: true, displayKey, daysAllowed }.
+         */
+        function validateKeyStatus(userKey, rawLines) {
+            const target = userKey.trim().toLowerCase();
+            let foundLine = null;
+            let notice = null;
+            let expired = false;
+
+            for (const rawLine of rawLines) {
+                const lowerLine = rawLine.toLowerCase();
+
+                if (lowerLine.startsWith('tb.')) {
+                    const [noticeCode, ...rest] = lowerLine.slice(3).split('|').map((p) => p.trim());
+                    if (noticeCode === target) {
+                        foundLine = rawLine;
+                        notice = rest[0] || 'Đã bị ngắt kết nối!';
                         break;
                     }
+                    continue;
                 }
 
-                if(found) {
-                    msg.style.color = "#10b981";
-                    msg.innerText = "Đăng nhập thành công!";
-                } else {
-                    msg.style.color = "#ef4444";
-                    msg.innerText = "Key không tồn tại!";
+                const parts = rawLine.split('|').map((p) => p.trim());
+                const lowerParts = lowerLine.split('|').map((p) => p.trim());
+                const codePart = lowerParts[0] || '';
+                const keyPart = lowerParts[1] || lowerParts[0];
+
+                const candidates = new Set([codePart, keyPart, stripSuffix(codePart), stripSuffix(keyPart)]);
+                if (candidates.has(target)) {
+                    foundLine = rawLine;
+                    expired = lowerLine.includes('#hết hạn') || lowerLine.includes('#đã sử dụng');
+                    break;
                 }
-            } catch(e) {
-                msg.style.color = "#ef4444";
-                msg.innerText = "Lỗi kết nối máy chủ!";
+            }
+
+            if (!foundLine) return { valid: false, message: '❌ Key không tồn tại!' };
+            if (notice) return { valid: false, message: `⚠️ ${notice}` };
+            if (expired) return { valid: false, message: '⚠️ Key đã hết hạn!' };
+
+            const parts = foundLine.split('|').map((p) => p.trim());
+            const fullRawKey = parts[1] || parts[0];
+            const durationMatch = fullRawKey.match(/(\d+)[dn]/i);
+            const daysAllowed = durationMatch ? parseInt(durationMatch[1], 10) : 1;
+            const displayKey = stripSuffix(fullRawKey.split('.keytrial.')[0]);
+
+            return { valid: true, displayKey, daysAllowed };
+        }
+
+        function storageKeysFor(code) {
+            return {
+                expire: STORAGE_PREFIX.EXPIRE + code,
+                key: STORAGE_PREFIX.KEY + code,
+            };
+        }
+
+        function persistSession(code, displayKey, daysAllowed, isNewLogin) {
+            const { expire, key } = storageKeysFor(code);
+            let expireTime = localStorage.getItem(expire);
+
+            const hasActiveSession = !!localStorage.getItem(STORAGE_PREFIX.ACTIVE_CODE);
+            if (!expireTime || (isNewLogin && !hasActiveSession)) {
+                expireTime = Date.now() + daysAllowed * 24 * 60 * 60 * 1000;
+                localStorage.setItem(expire, expireTime);
+            }
+
+            localStorage.setItem(STORAGE_PREFIX.ACTIVE_CODE, code);
+            localStorage.setItem(key, displayKey);
+            return parseInt(expireTime, 10);
+        }
+
+        function clearSession(code) {
+            if (code) {
+                const { expire, key } = storageKeysFor(code);
+                localStorage.removeItem(expire);
+                localStorage.removeItem(key);
+            }
+            localStorage.removeItem(STORAGE_PREFIX.ACTIVE_CODE);
+        }
+
+        function processUserKey(inputKey, rawLines, isNewLogin) {
+            const result = validateKeyStatus(inputKey, rawLines);
+            if (!result.valid) {
+                logout(result.message);
+                return;
+            }
+            const expireTime = persistSession(inputKey, result.displayKey, result.daysAllowed, isNewLogin);
+            showAppUI(result.displayKey);
+            startTimer(expireTime);
+            startRealtimeCheck();
+        }
+
+        async function login() {
+            const inputKey = els.keyInput.value.trim().toLowerCase();
+            setError('⏳ Đang kiểm tra...', '#a5b4fc');
+
+            if (!inputKey) {
+                setError('⚠️ Vui lòng nhập Mã/Key!');
+                return;
+            }
+
+            const rawLines = await fetchKeyList();
+            if (!rawLines) {
+                setError('❌ Không thể kết nối máy chủ!');
+                return;
+            }
+
+            processUserKey(inputKey, rawLines, true);
+        }
+
+        function startTimer(expireTime) {
+            clearInterval(timerIntervalId);
+
+            const tick = () => {
+                const diff = expireTime - Date.now();
+                if (diff <= 0) {
+                    clearInterval(timerIntervalId);
+                    logout('Key đã hết thời gian sử dụng!');
+                    return;
+                }
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                els.timeRemaining.innerText = `${d > 0 ? d + 'd ' : ''}${h}h ${m}m ${s}s`;
+            };
+
+            tick();
+            timerIntervalId = setInterval(tick, 1000);
+        }
+
+        function copyKey() {
+            if (!activeFullKey) return;
+            navigator.clipboard.writeText(activeFullKey).then(() => {
+                const original = els.copyBtn.innerText;
+                els.copyBtn.innerText = '✅ Đã Sao Chép!';
+                setTimeout(() => { els.copyBtn.innerText = original; }, 2000);
+            });
+        }
+
+        function startRealtimeCheck() {
+            clearInterval(checkIntervalId);
+            checkIntervalId = setInterval(async () => {
+                const savedCode = localStorage.getItem(STORAGE_PREFIX.ACTIVE_CODE);
+                if (!savedCode) return;
+                const rawLines = await fetchKeyList();
+                if (!rawLines) return;
+                const result = validateKeyStatus(savedCode, rawLines);
+                if (!result.valid) logout(result.message);
+            }, REALTIME_CHECK_MS);
+        }
+
+        function logout(reason) {
+            clearInterval(checkIntervalId);
+            clearInterval(timerIntervalId);
+
+            const savedCode = localStorage.getItem(STORAGE_PREFIX.ACTIVE_CODE);
+            clearSession(savedCode);
+
+            els.appContent.classList.remove('active');
+            els.loginBox.classList.add('active');
+            els.keyInput.value = '';
+            setError(reason || '');
+        }
+
+        function showAppUI(key) {
+            activeFullKey = key;
+            els.loginBox.classList.remove('active');
+            els.appContent.classList.add('active');
+            els.userKeyDisplay.innerText = key;
+            setError('');
+        }
+
+        async function restoreSession() {
+            const savedCode = localStorage.getItem(STORAGE_PREFIX.ACTIVE_CODE);
+            if (!savedCode) return;
+
+            setError('⏳ Đang đồng bộ...', '#a5b4fc');
+            const rawLines = await fetchKeyList();
+
+            if (rawLines) {
+                processUserKey(savedCode, rawLines, false);
+                return;
+            }
+
+            // Không tải được danh sách mới — dùng dữ liệu đã lưu cục bộ nếu còn hạn.
+            const { expire, key } = storageKeysFor(savedCode);
+            const savedKey = localStorage.getItem(key);
+            const expireTime = localStorage.getItem(expire);
+            if (savedKey && expireTime) {
+                showAppUI(savedKey);
+                startTimer(parseInt(expireTime, 10));
+                startRealtimeCheck();
+            } else {
+                logout('❌ Lỗi kết nối!');
             }
         }
+
+        els.copyBtn.addEventListener('click', copyKey);
+        document.getElementById('login-btn').addEventListener('click', login);
+        document.getElementById('logout-btn').addEventListener('click', () => logout('Đã đăng xuất!'));
+        els.keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') login(); });
+
+        window.addEventListener('load', restoreSession);
+    })();
     </script>
 </body>
 </html>
