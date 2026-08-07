@@ -208,7 +208,6 @@
     </div>
 
     <script>
-        // Trỏ trực tiếp vào file Key.txt vừa đổi tên
         const DATA_SOURCES = [
             "https://cdn.jsdelivr.net/gh/Hieu-e88/severkey-q@main/Key.txt",
             "https://raw.githubusercontent.com/Hieu-e88/severkey-q/main/Key.txt"
@@ -295,8 +294,9 @@
                 const lowerLine = rawLine.toLowerCase();
                 
                 if (lowerLine.startsWith('tb.')) {
-                    let parts = lowerLine.substring(3).split('|').map(p => p.trim());
-                    if (parts[0] === target) {
+                    let parts = lowerLine.split('|').map(p => p.trim());
+                    let codePart = parts[0].replace('tb.', '').trim();
+                    if (codePart === target) {
                         foundLine = rawLine;
                         isNotice = true;
                         noticeMessage = parts[1] || "Đã bị ngắt kết nối!";
@@ -304,13 +304,11 @@
                     }
                 } else {
                     let parts = rawLine.split('|').map(p => p.trim());
-                    let lowerParts = lowerLine.split('|').map(p => p.trim());
+                    let codePart = parts[0] ? parts[0].toLowerCase() : "";
+                    let keyPart = parts[1] ? parts[1].toLowerCase() : "";
 
-                    let codePart = lowerParts[0] || "";
-                    let keyPart = lowerParts[1] ? lowerParts[1] : lowerParts[0];
-
-                    let cleanCode = codePart.split('#')[0].split('.keytrial')[0].trim();
-                    let cleanKey = keyPart.split('#')[0].split('.keytrial')[0].trim();
+                    let cleanCode = codePart.split('#')[0].trim();
+                    let cleanKey = keyPart.split('#')[0].trim();
 
                     if (target === codePart || target === keyPart || target === cleanCode || target === cleanKey) {
                         foundLine = rawLine;
@@ -333,7 +331,7 @@
             const match = fullRawKey.match(/(\d+)d/i) || fullRawKey.match(/(\d+)n/i);
             if (match) days = parseInt(match[1]);
 
-            let displayKey = fullRawKey.split('.keytrial.')[0].split('#')[0].trim();
+            let displayKey = fullRawKey.split('#')[0].trim();
             return { valid: true, displayKey: displayKey, daysAllowed: days };
         }
 
