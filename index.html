@@ -190,9 +190,12 @@
     (() => {
         'use strict';
 
+        // raw.githubusercontent.com đứng trước: không có CDN cache, luôn trả dữ liệu mới nhất.
+        // jsDelivr đứng sau làm dự phòng khi raw.githubusercontent.com bị chặn/lỗi mạng,
+        // nhưng có thể trễ vài phút tới vài giờ do cơ chế cache của CDN.
         const DATA_SOURCES = [
-            'https://cdn.jsdelivr.net/gh/Hieu-e88/severkey-q@main/Key.txt',
             'https://raw.githubusercontent.com/Hieu-e88/severkey-q/main/Key.txt',
+            'https://cdn.jsdelivr.net/gh/Hieu-e88/severkey-q@main/Key.txt',
         ];
         const REALTIME_CHECK_MS = 6000;
         const STORAGE_PREFIX = { EXPIRE: 'expire_time_', KEY: 'key_content_', ACTIVE_CODE: 'user_input_code' };
