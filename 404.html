@@ -278,11 +278,11 @@
       const data = await res.json();
       document.getElementById("ip").textContent = data.ip || "2001:ee0:4930:bbd0::1";
       document.getElementById("country").textContent = data.country_name || "Vietnam";
-      document.getElementById("region").textContent = data.region || data.city || "Hung Yen";
+      document.getElementById("region").textContent = data.region || data.city || "thong tin duoc ma hoa";
     } catch (err) {
       document.getElementById("ip").textContent = "2001:ee0:4930:bbd0:27e0:58b2:6902:1e33";
       document.getElementById("country").textContent = "Vietnam";
-      document.getElementById("region").textContent = "HA NOI";
+      document.getElementById("region").textContent = "thong tin duoc ma hoa";
     }
   }
 
