@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>CẢNH BÁO - CỤC AN NINH MẠNG</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100vh;
+      width: 100%;
+      background-color: #dcdcdc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Times New Roman', Times, serif;
+      padding: 1rem;
+    }
+
+    .container {
+      width: min(95vw, 680px);
+      background: #ffffff;
+      border: 2px solid #a80000;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+      margin: auto;
+    }
+
+    .header {
+      background: #8b0000;
+      color: #ffdd77;
+      text-align: center;
+      padding: 1.2rem 0.8rem;
+    }
+
+    .bo-cong-an {
+      font-size: clamp(1.1rem, 4vw, 1.5rem);
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .cuc-an-ninh {
+      font-size: clamp(0.65rem, 2vw, 0.8rem);
+      margin-top: 0.3rem;
+      letter-spacing: 0.5px;
+      font-family: Arial, sans-serif;
+    }
+
+    .content {
+      padding: clamp(1rem, 4vw, 1.8rem);
+    }
+
+    .canh-bao {
+      text-align: center;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-weight: bold;
+      color: #cc0000;
+      border: 2px solid #cc0000;
+      padding: 0.4rem 0;
+      margin-bottom: 1.2rem;
+      background: #fffdf0;
+      letter-spacing: 2px;
+    }
+
+    .noi-dung-luat {
+      font-size: clamp(0.8rem, 2.8vw, 0.95rem);
+      line-height: 1.5;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      color: #111;
+    }
+
+    .noi-dung-luat strong {
+      color: #a80000;
+    }
+
+    .luu-lai {
+      text-align: center;
+      font-weight: bold;
+      margin: 1.2rem 0;
+      padding: 0.6rem;
+      background: #ffffdf;
+      border-left: 4px solid #cc0000;
+      border-right: 4px solid #cc0000;
+      font-size: clamp(0.8rem, 2.6vw, 0.9rem);
+      color: #111;
+    }
+
+    .to-giac {
+      margin: 1.2rem 0;
+      padding: 0.8rem;
+      border: 1px solid #d0d0d0;
+      background: #fafafa;
+    }
+
+    .to-giac-title {
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+      font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    }
+
+    .dia-chi {
+      font-size: clamp(0.75rem, 2.3vw, 0.85rem);
+      line-height: 1.4;
+      color: #333;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: 0;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      border: 1px solid #999;
+      font-size: clamp(0.75rem, 2.4vw, 0.85rem);
+    }
+
+    .info-table td {
+      border: 1px solid #aaa;
+      padding: 0.5rem 0.7rem;
+      vertical-align: middle;
+    }
+
+    .info-label {
+      width: 35%;
+      background: #eaeaea;
+      font-weight: bold;
+      color: #222;
+      font-family: Arial, sans-serif;
+    }
+
+    .info-value {
+      background: #ffffff;
+      font-family: 'Courier New', Courier, monospace;
+      color: #333;
+      word-break: break-all;
+    }
+
+    .footer {
+      background: #2b2b2b;
+      color: #ffdd88;
+      text-align: center;
+      padding: 0.6rem;
+      font-size: clamp(0.65rem, 2vw, 0.75rem);
+      border-top: 2px solid #8b0000;
+      letter-spacing: 1px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="bo-cong-an">BỘ CÔNG AN</div>
+    <div class="cuc-an-ninh">CỤC AN NINH MẠNG VÀ PHÒNG CHỐNG TỘI PHẠM SỬ DỤNG CÔNG NGHỆ CAO</div>
+  </div>
+
+  <div class="content">
+    <div class="canh-bao">CẢNH BÁO</div>
+
+    <div class="noi-dung-luat">
+      Hành vi xâm nhập trái phép vào hệ thống máy tính, mạng viễn thông,<br>
+      phương tiện điện tử của người khác là vi phạm pháp luật, quy định tại<br>
+      <strong>Điều 286, Điều 287, Điều 289 - Bộ luật Hình sự 2015 (SỬA ĐỔI BỔ SUNG 2017)</strong><br>
+      nước Cộng hòa Xã hội chủ nghĩa Việt Nam
+    </div>
+
+    <div class="luu-lai">
+      Cơ quan công an sẽ lưu lại lượt truy cập này để tập hợp xử lý!
+    </div>
+
+    <div class="to-giac">
+      <div class="to-giac-title">Mọi thông tin tố giác tội phạm có liên quan xin gửi về:</div>
+      <div class="dia-chi">Cục An ninh mạng và phòng, chống tội phạm sử dụng công nghệ cao, Lô E2, Dương Đình Nghệ, Cầu Giấy, Hà Nội.</div>
+    </div>
+
+    <hr>
+
+    <table class="info-table">
+      <tr>
+        <td class="info-label">Your IP Address:</td>
+        <td class="info-value" id="ip">Đang lấy...</td>
+      </tr>
+      <tr>
+        <td class="info-label">Your OS:</td>
+        <td class="info-value" id="os">Đang lấy...</td>
+      </tr>
+      <tr>
+        <td class="info-label">Your Country:</td>
+        <td class="info-value" id="country">Đang lấy...</td>
+      </tr>
+      <tr>
+        <td class="info-label">Your Location:</td>
+        <td class="info-value" id="region">Đang lấy...</td>
+      </tr>
+      <tr>
+        <td class="info-label">Your Browser:</td>
+        <td class="info-value" id="browser">Đang lấy...</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    CÔNG AN ĐIỆN TỬ - BẢO VỆ AN NINH QUỐC GIA
+  </div>
+</div>
+
+<script>
+  function detectDevice() {
+    const ua = navigator.userAgent;
+    let os = "Android";
+    let browser = "Chrome 151.0";
+
+    if (ua.indexOf("Win") !== -1) os = "Windows";
+    else if (ua.indexOf("Mac") !== -1) os = "macOS";
+    else if (ua.indexOf("Linux") !== -1 && ua.indexOf("Android") === -1) os = "Linux";
+    else if (ua.indexOf("iPhone") !== -1 || ua.indexOf("iPad") !== -1) os = "iOS";
+
+    if (ua.indexOf("Edg") !== -1) {
+      const m = ua.match(/Edg\/([0-9\.]+)/);
+      browser = m ? `Edge ${m[1]}` : "Microsoft Edge";
+    } else if (ua.indexOf("Chrome") !== -1) {
+      const m = ua.match(/Chrome\/([0-9\.]+)/);
+      browser = m ? `Chrome ${m[1]}` : "Chrome 151.0";
+    } else if (ua.indexOf("Firefox") !== -1) {
+      const m = ua.match(/Firefox\/([0-9\.]+)/);
+      browser = m ? `Firefox ${m[1]}` : "Firefox";
+    }
+
+    document.getElementById("os").textContent = os;
+    document.getElementById("browser").textContent = browser;
+  }
+
+  // 1. Thử lấy định vị GPS chính xác (Huyện/Tỉnh)
+  function getLocationGPS() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          try {
+            // Dùng Nominatim API để dịch tọa độ GPS ra tên Huyện, Tỉnh
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=vi`);
+            const data = await res.json();
+            
+            const county = data.address.county || data.address.district || "";
+            const state = data.address.state || data.address.city || "";
+            
+            document.getElementById("region").textContent = `${county}, ${state}`.replace(/^,\s*/, '');
+          } catch (e) {
+            fetchIPLocation(); // Nếu lỗi dịch tọa độ thì quay lại lấy theo IP
+          }
+        },
+        () => {
+          fetchIPLocation(); // Nếu người dùng Từ chối cho GPS thì quay lại lấy theo IP
+        },
+        { timeout: 5000 }
+      );
+    } else {
+      fetchIPLocation();
+    }
+  }
+
+  // 2. Phương án dự phòng: Lấy vị trí qua IP
+  async function fetchIPLocation() {
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      document.getElementById("ip").textContent = data.ip || "2001:ee0:4930:bbd0::1";
+      document.getElementById("country").textContent = data.country_name || "Vietnam";
+      document.getElementById("region").textContent = data.region || data.city || "Hung Yen";
+    } catch (err) {
+      document.getElementById("ip").textContent = "2001:ee0:4930:bbd0:27e0:58b2:6902:1e33";
+      document.getElementById("country").textContent = "Vietnam";
+      document.getElementById("region").textContent = "Van Giang, Hung Yen";
+    }
+  }
+
+  window.onload = function() {
+    detectDevice();
+    getLocationGPS();
+  };
+</script>
+
+</body>
+</html>
