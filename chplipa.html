@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>M.hieuu5 - Game & App chplipa</title>
+    <style>
+        :root {
+            --bg-color: #f2f2f7;
+            --card-bg: #ffffff;
+            --text-primary: #1c1c1e;
+            --text-secondary: #8e8e93;
+            --accent-color: #007aff;
+            --accent-hover: #0056b3;
+            --border-color: #e5e5ea;
+            --success-color: #34c759;
+            --danger-color: #ff3b30;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --card-bg: #1c1c1e;
+            --text-primary: #ffffff;
+            --text-secondary: #8e8e93;
+            --accent-color: #0a84ff;
+            --accent-hover: #409cff;
+            --border-color: #2c2c2e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+            padding-bottom: 70px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--border-color);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        [data-theme="dark"] header {
+            background: rgba(28, 28, 30, 0.85);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #007aff, #5856d6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .tab-bar {
+            display: flex;
+            background: var(--card-bg);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 0.5px solid var(--border-color);
+        }
+
+        .tab-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 7px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .tab-item.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            border: 0.5px solid var(--border-color);
+            transition: transform 0.15s;
+        }
+
+        .app-card:active {
+            transform: scale(0.98);
+        }
+
+        .app-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            object-fit: cover;
+            background-color: var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .app-details {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .app-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 6px;
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-info { background: rgba(0, 122, 255, 0.15); color: var(--accent-color); }
+        .badge-android { background: rgba(52, 199, 89, 0.15); color: var(--success-color); }
+
+        .btn-get {
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--accent-color);
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .detail-view {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 0.5px solid var(--border-color);
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .detail-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .detail-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .detail-meta {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-install-large {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-verify-large {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .screenshots-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .screenshots-scroll img {
+            height: 180px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: var(--border-color);
+        }
+
+        .no-screenshots {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding: 10px 0;
+        }
+
+        .guide-box {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 20px;
+            border: 0.5px solid var(--border-color);
+            line-height: 1.6;
+        }
+
+        .guide-step { margin-bottom: 16px; }
+        .guide-step h4 { color: var(--accent-color); margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand" onclick="closeDetail()">
+            <div class="brand-logo">M</div>
+            <div class="brand-title">M.hieuu5</div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </header>
+
+    <main>
+        <div class="tab-bar">
+            <div class="tab-item active" onclick="switchTab(this, 'apps')">Danh sách Mod</div>
+            <div class="tab-item" onclick="switchTab(this, 'guide')">Hướng dẫn Cài đặt</div>
+        </div>
+
+        <div id="tab-apps">
+            <div id="home-view">
+                <div class="section-title">Kho Game & MOD Tải Nhiều</div>
+                <div class="app-list" id="app-grid"></div>
+            </div>
+
+            <div id="detail-view" class="detail-view">
+                <button class="btn-back" onclick="closeDetail()">‹ Quay lại</button>
+                <div class="detail-header">
+                    <img id="detail-icon" class="detail-icon" src="" alt="App Icon">
+                    <div class="detail-meta">
+                        <div class="detail-title" id="detail-title" style="font-weight: 700; font-size: 18px;"></div>
+                        <div class="detail-developer" style="font-size: 13px; color: var(--text-secondary);">Nhà phát triển: M.hieuu5</div>
+                        <div class="action-buttons" id="detail-actions"></div>
+                    </div>
+                </div>
+
+                <div style="font-weight:700; margin: 15px 0 10px;">Ảnh xem trước</div>
+                <div id="detail-screenshots"></div>
+
+                <div style="font-weight:700; margin: 15px 0 10px;">Mô tả chi tiết</div>
+                <div class="description-text" id="detail-desc" style="font-size: 14px; line-height: 1.6;"></div>
+            </div>
+        </div>
+
+        <div id="tab-guide" style="display: none;">
+            <div class="guide-box">
+                <h3>Hướng dẫn Tin cậy iOS</h3>
+                <div class="guide-step">
+                    <h4>Bước 1: Tải về</h4>
+                    <p>Nhấn Cài đặt trực tiếp (iTMS) hoặc tải file IPA.</p>
+                </div>
+                <div class="guide-step">
+                    <h4>Bước 2: Cài đặt hệ thống</h4>
+                    <p>Mở <b>Cài đặt (Settings)</b> -> <b>Cài đặt chung (General)</b> -> <b>Quản lý VPN & Thiết bị</b>.</p>
+                </div>
+                <div class="guide-step">
+                    <h4>Bước 3: Xác minh</h4>
+                    <p>Chọn Doanh nghiệp phát triển tương ứng và nhấn <b>Tin cậy (Trust)</b>.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const capcutIcon = 'https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/2d/f9/fa/2df9fa7e-7d9c-3fd7-a096-20db68646962/Placeholder.mill/400x400bb-75.webp';
+
+        const appsData = [
+            {
+                id: 'capcut-pro-ios',
+                type: 'ios',
+                name: 'CapCut Pro (iOS)',
+                sub: 'Mở khóa toàn bộ tính năng Pro',
+                icon: capcutIcon,
+                badges: ['iOS', 'iTMS', 'Pro Unlocked'],
+                screenshots: [],
+                manifest: 'itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/Hieu-e88/severkey-q/main/Capcut.plist',
+                desc: 'Phiên bản CapCut Pro dành cho hệ điều hành iOS. Đã mở khóa đầy đủ các tính năng nâng cao, hiệu ứng Pro và xuất video chất lượng cao mà không cần tài khoản trả phí.'
+            },
+            {
+                id: 'capcut-pro-adr',
+                type: 'android',
+                name: 'CapCut Pro (Android)',
+                sub: 'Phiên bản V2 - Full VIP/Pro Features',
+                icon: capcutIcon,
+                badges: ['APK', 'Android', 'Pro Unlocked'],
+                screenshots: [],
+                apkUrl: 'https://www.mediafire.com/file/11lu3hf4i46ct8j/CAPCUT+PRO+NEW+V2.apk/file',
+                desc: 'Phiên bản CapCut Pro NEW V2 dành cho Android. Tích hợp full tính năng VIP, hiệu ứng độc quyền, lọc màu nâng cao và mở khóa các công cụ chỉnh sửa cao cấp.'
+            },
+            {
+                id: 'aovmod-main',
+                type: 'ios',
+                name: 'AovMod (v1.63)',
+                sub: 'Powered by M.hieuu5 - Full Đồ họa & Mod Skin',
+                icon: 'https://play-lh.googleusercontent.com/Yw0Btf8-k6y4lOnAUf7XW6GYP8SwxXsqWcnabNhqXUSFNhn_azJ-t9jDTdR4a063qwUPo-JtCQAmoLfo8gecTA=w240-h480-rw',
+                badges: ['iOS', '223MB', 'v1.63'],
+                screenshots: [
+                    'https://cdn.tumadam.com/games/preview/c578be3f-80d8-4a00-9d09-be8b46dab30d.png',
+                    'https://cdn.tumadam.com/games/preview/f5e9a39e-c0d6-470b-a1a3-f97e63e8fc71.png',
+                    'https://cdn.tumadam.com/games/preview/a3be4ac7-9c03-4af6-af89-c10d75d15324.png'
+                ],
+                manifest: 'itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/tumadammod/manifest/refs/heads/main/aovmod.plist',
+                keyUrl: 'https://hieune.com',
+                desc: 'Phiên bản AovMod tích hợp đầy đủ tính năng mod skin, bản đồ, tối ưu hóa đồ họa trên iOS.'
+            },
+            {
+                id: 'aovcheat-ios',
+                type: 'ios',
+                name: 'AovCheat iOS (v1.63)',
+                sub: 'Powered by M.hieuu5 - Bản mở rộng tính năng',
+                icon: 'https://play-lh.googleusercontent.com/Yw0Btf8-k6y4lOnAUf7XW6GYP8SwxXsqWcnabNhqXUSFNhn_azJ-t9jDTdR4a063qwUPo-JtCQAmoLfo8gecTA=w240-h480-rw',
+                badges: ['iOS', '223MB', 'v1.63'],
+                screenshots: [
+                    'https://cdn.tumadam.com/games/preview/3a71476e-968c-4b3c-bece-1f06f11b94db.png',
+                    'https://cdn.tumadam.com/games/preview/dbb1a706-0a7e-4d10-9875-2dc358f1dd6d.png',
+                    'https://cdn.tumadam.com/games/preview/ef3d8709-a6a9-4970-9b53-ce66863fc4f6.png'
+                ],
+                manifest: 'itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/tumadammod/manifest/refs/heads/main/aovcheat.plist',
+                ipa: 'https://dl.ipas.cc/ipas/x1f8cv.ipa',
+                keyUrl: 'https://tumadammod.github.io/getkeygame',
+                desc: 'Hỗ trợ Cài trực tiếp iTMS hoặc tải file IPA tự cài qua AltStore, Sideloadly.'
+            },
+            {
+                id: 'aov-android',
+                type: 'android',
+                name: 'Aov Map/Mod Android',
+                sub: 'Android 64Bit - Chơi Mod No Hack',
+                icon: 'https://play-lh.googleusercontent.com/gU0rhVqaGc8l1rV_cwmopYrn1J97S1t1kddMu-QE42M4tmzupO44lyIhAlTXF7PbQ5wFk9j6n9uLZc1R9_HV',
+                badges: ['APK', '64Bit', '223MB'],
+                screenshots: [
+                    'https://ipas.cc/_next/image?url=https%3A%2F%2Fdl.ipas.cc%2Fpreviews%2F1786466881223-d04m05-IMG_0025.jpeg&w=1920&q=75',
+                    'https://ipas.cc/_next/image?url=https%3A%2F%2Fdl.ipas.cc%2Fpreviews%2F1786466881224-hm6l8-IMG_0026.jpeg&w=1920&q=75',
+                    'https://ipas.cc/_next/image?url=https%3A%2F%2Fdl.ipas.cc%2Fpreviews%2F1786466881224-sqbpb-IMG_0027.jpeg&w=1920&q=75'
+                ],
+                apkUrl: 'https://dl.ipas.cc/apks/oljobn.apk',
+                keyUrl: 'https://unlock.tumadam.com/aovandr.html',
+                desc: 'Bản APK Android hỗ trợ unlock skin, tùy chỉnh giao diện nút và thông báo hạ. An toàn cho tài khoản.'
+            }
+        ];
+
+        let selectedApp = null;
+
+        function renderAppList() {
+            const container = document.getElementById('app-grid');
+            container.innerHTML = '';
+
+            appsData.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.onclick = () => openAppDetail(app.id);
+
+                card.innerHTML = `
+                    <img src="${app.icon}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/64'">
+                    <div class="app-details">
+                        <div class="app-name">${app.name}</div>
+                        <div class="app-sub">${app.sub}</div>
+                        <div class="badge-container">
+                            ${app.badges.map(b => `<span class="badge ${app.type === 'android' ? 'badge-android' : 'badge-info'}">${b}</span>`).join('')}
+                        </div>
+                    </div>
+                    <button class="btn-get">XEM</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openAppDetail(id) {
+            selectedApp = appsData.find(a => a.id === id);
+            if (!selectedApp) return;
+
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+
+            document.getElementById('detail-title').innerText = selectedApp.name;
+            document.getElementById('detail-icon').src = selectedApp.icon;
+            document.getElementById('detail-desc').innerText = selectedApp.desc;
+
+            const actionsBox = document.getElementById('detail-actions');
+            actionsBox.innerHTML = '';
+
+            if (selectedApp.manifest) {
+                const installBtn = document.createElement('button');
+                installBtn.className = 'btn-install-large';
+                installBtn.innerText = 'Cài trực tiếp (iOS)';
+                installBtn.onclick = () => window.location.href = selectedApp.manifest;
+                actionsBox.appendChild(installBtn);
+            }
+
+            if (selectedApp.ipa) {
+                const ipaBtn = document.createElement('button');
+                ipaBtn.className = 'btn-install-large';
+                ipaBtn.style.background = '#ec4899';
+                ipaBtn.innerText = 'Tải IPA';
+                ipaBtn.onclick = () => window.open(selectedApp.ipa, '_blank');
+                actionsBox.appendChild(ipaBtn);
+            }
+
+            if (selectedApp.apkUrl) {
+                const apkBtn = document.createElement('button');
+                apkBtn.className = 'btn-install-large';
+                apkBtn.style.background = '#34c759';
+                apkBtn.innerText = 'Tải File APK';
+                apkBtn.onclick = () => window.open(selectedApp.apkUrl, '_blank');
+                actionsBox.appendChild(apkBtn);
+            }
+
+            if (selectedApp.keyUrl) {
+                const keyLink = document.createElement('a');
+                keyLink.className = 'btn-verify-large';
+                keyLink.innerText = 'Lấy Key / Mã xác minh';
+                keyLink.href = selectedApp.keyUrl;
+                keyLink.target = '_blank';
+                actionsBox.appendChild(keyLink);
+            }
+
+            const screenshotsBox = document.getElementById('detail-screenshots');
+            screenshotsBox.innerHTML = '';
+            
+            if (selectedApp.screenshots && selectedApp.screenshots.length > 0) {
+                const scrollDiv = document.createElement('div');
+                scrollDiv.className = 'screenshots-scroll';
+                selectedApp.screenshots.forEach(img => {
+                    const screenshotEl = document.createElement('img');
+                    screenshotEl.src = img;
+                    scrollDiv.appendChild(screenshotEl);
+                });
+                screenshotsBox.appendChild(scrollDiv);
+            } else {
+                const noImgEl = document.createElement('div');
+                noImgEl.className = 'no-screenshots';
+                noImgEl.innerText = 'Chưa có ảnh nào';
+                screenshotsBox.appendChild(noImgEl);
+            }
+        }
+
+        function closeDetail() {
+            document.getElementById('home-view').style.display = 'block';
+            document.getElementById('detail-view').style.display = 'none';
+        }
+
+        function switchTab(el, tabName) {
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+
+            if (tabName === 'apps') {
+                document.getElementById('tab-apps').style.display = 'block';
+                document.getElementById('tab-guide').style.display = 'none';
+            } else {
+                document.getElementById('tab-apps').style.display = 'none';
+                document.getElementById('tab-guide').style.display = 'block';
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            document.querySelector('.theme-toggle').innerText = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        window.onload = function() {
+            renderAppList();
+        };
+    </script>
+</body>
+</html>
