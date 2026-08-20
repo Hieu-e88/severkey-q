@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirect Tool</title>
+<style>
+  :root{
+    --bg:#0b0e14;
+    --panel:#131826;
+    --border:#232a3d;
+    --text:#e6e9f0;
+    --muted:#8891a7;
+    --accent:#5eead4;
+    --accent-dim:#134e4a;
+    --mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+      radial-gradient(circle at 20% 20%, #101828 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, #0f1c22 0%, transparent 40%),
+      var(--bg);
+    font-family:'Segoe UI',Roboto,Arial,sans-serif;
+    color:var(--text);
+    padding:20px;
+  }
+  .container{
+    width:100%;
+    max-width:520px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:32px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.4);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 6px;
+  }
+  h1{
+    font-size:20px;
+    margin:0 0 4px;
+    font-weight:600;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:13px;
+    margin:0 0 24px;
+  }
+  label{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  input{
+    width:100%;
+    padding:12px 14px;
+    font-size:14px;
+    font-family:var(--mono);
+    background:#0d1220;
+    border:1px solid var(--border);
+    border-radius:8px;
+    color:var(--text);
+    outline:none;
+    transition:border-color .2s;
+  }
+  input:focus{border-color:var(--accent);}
+  .row{display:flex; gap:10px; margin-top:14px;}
+  button{
+    flex:1;
+    padding:12px 18px;
+    font-size:14px;
+    font-weight:600;
+    background:var(--accent);
+    color:#04211d;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:filter .2s, transform .1s;
+  }
+  button:hover{filter:brightness(1.08);}
+  button:active{transform:scale(0.98);}
+  button:disabled{opacity:.5; cursor:not-allowed;}
+  button.secondary{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid var(--border);
+    flex:0 0 auto;
+    padding:12px 16px;
+  }
+
+  .preview{
+    margin-top:20px;
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    display:none;
+  }
+  .preview.show{display:block;}
+  .preview-label{
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:6px;
+  }
+  .preview-url{
+    font-family:var(--mono);
+    font-size:13px;
+    word-break:break-all;
+    background:#0d1220;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px 12px;
+    color:var(--accent);
+  }
+  .countdown{
+    margin-top:12px;
+    font-size:13px;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .bar{
+    flex:1;
+    height:4px;
+    background:var(--border);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .bar-fill{
+    height:100%;
+    width:100%;
+    background:var(--accent);
+    transform-origin:left;
+    animation:shrink 3s linear forwards;
+  }
+  @keyframes shrink{ to { transform: scaleX(0); } }
+  .hint{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:16px;
+    line-height:1.5;
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <p class="eyebrow">redirect · decode</p>
+    <h1>Trình chuyển hướng</h1>
+    <p class="sub">Dán link vào bên dưới. Nếu link có chứa tham số <code>url=</code> đã mã hoá, công cụ sẽ tự giải mã và hiển thị địa chỉ thật trước khi chuyển.</p>
+
+    <label for="urlInput">Địa chỉ</label>
+    <input type="text" id="urlInput" placeholder="Dán link vào đây...">
+
+    <div class="row">
+      <button id="goBtn" onclick="handleGo()">Truy cập</button>
+      <button class="secondary" onclick="clearAll()">Xoá</button>
+    </div>
+
+    <div class="preview" id="previewBox">
+      <div class="preview-label">Đích thực tế</div>
+      <div class="preview-url" id="previewUrl">—</div>
+      <div class="countdown">
+        <span id="countdownText">Đang chuyển hướng...</span>
+        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      </div>
+    </div>
+
+    <p class="hint">Công cụ chỉ đọc tham số <code>url=</code> có sẵn trong link bạn dán vào và giải mã (decodeURIComponent) để hiển thị công khai — không ẩn hay che giấu địa chỉ đích.</p>
+  </div>
+
+<script>
+const inputField = document.getElementById('urlInput');
+const previewBox  = document.getElementById('previewBox');
+const previewUrl  = document.getElementById('previewUrl');
+const countdownText = document.getElementById('countdownText');
+const barFill = document.getElementById('barFill');
+const goBtn = document.getElementById('goBtn');
+
+let redirectTimer = null;
+
+// Rút ra địa chỉ đích thật sự từ link nhập vào.
+// Nếu link có query param "url", lấy giá trị đó và decode.
+// Nếu không có, dùng chính link đã nhập.
+function resolveTarget(rawInput) {
+  let candidate = rawInput.trim();
+  if (!candidate) return null;
+
+  // Thêm scheme tạm để URL() parse được, kể cả khi người dùng gõ thiếu http(s)://
+  let parsable = candidate;
+  if (!/^https?:\/\//i.test(parsable)) {
+    parsable = 'https://' + parsable;
+  }
+
+  try {
+    const parsed = new URL(parsable);
+    const nested = parsed.searchParams.get('url');
+    if (nested) {
+      // Giải mã (có thể đã được encode nhiều lớp)
+      let decoded = nested;
+      try {
+        let prev;
+        do {
+          prev = decoded;
+          decoded = decodeURIComponent(decoded);
+        } while (decoded !== prev && /%[0-9A-Fa-f]{2}/.test(decoded));
+      } catch (e) {
+        decoded = nested; // nếu decode lỗi, giữ nguyên bản gốc
+      }
+      if (!/^https?:\/\//i.test(decoded)) {
+        decoded = 'https://' + decoded;
+      }
+      return decoded;
+    }
+    return parsed.href;
+  } catch (e) {
+    return null;
+  }
+}
+
+function handleGo() {
+  const raw = inputField.value;
+  const target = resolveTarget(raw);
+  if (!target) {
+    previewUrl.textContent = 'Link không hợp lệ';
+    previewBox.classList.add('show');
+    return;
+  }
+
+  previewUrl.textContent = target;
+  previewBox.classList.add('show');
+  countdownText.textContent = 'Đang chuyển hướng trong 3 giây...';
+  barFill.style.animation = 'none';
+  void barFill.offsetWidth; // reset animation
+  barFill.style.animation = 'shrink 3s linear forwards';
+
+  goBtn.disabled = true;
+  clearTimeout(redirectTimer);
+  redirectTimer = setTimeout(() => {
+    window.location.href = target;
+  }, 3000);
+}
+
+function clearAll() {
+  inputField.value = '';
+  previewBox.classList.remove('show');
+  clearTimeout(redirectTimer);
+  goBtn.disabled = false;
+}
+
+inputField.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') handleGo();
+});
+</script>
+
+</body>
+</html>
