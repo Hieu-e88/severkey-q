@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SeverKey — Activation</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Helvetica,sans-serif;
+  --mono:'SF Mono','Fira Code',Menlo,monospace;
+}
+html{height:100%}
+body{
+  font-family:var(--sans);
+  min-height:100%;
+  background:#080a0f;
+  color:#e2e8f0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:32px 16px;
+  padding-top:max(32px,env(safe-area-inset-top));
+  padding-bottom:max(32px,env(safe-area-inset-bottom));
+  position:relative;overflow:hidden;
+}
+
+/* background glow blobs */
+body::before{
+  content:'';position:fixed;
+  width:600px;height:600px;
+  top:-200px;left:50%;transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(79,70,229,0.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+body::after{
+  content:'';position:fixed;
+  width:400px;height:400px;
+  bottom:-150px;right:-100px;
+  background:radial-gradient(circle,rgba(16,185,129,0.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* ── wrapper ── */
+.page{width:100%;max-width:420px;position:relative;z-index:1}
+
+/* ── brand ── */
+.brand{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;margin-bottom:40px;
+}
+.brand-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;line-height:1;
+  box-shadow:0 4px 16px rgba(79,70,229,0.4);
+}
+.brand-name{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.2px}
+
+/* ── main card ── */
+.card{
+  background:linear-gradient(160deg,#0f1219 0%,#0c0f16 100%);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:20px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.02) inset,
+    0 32px 64px rgba(0,0,0,0.6),
+    0 8px 24px rgba(0,0,0,0.4);
+  overflow:hidden;
+}
+
+/* card top stripe */
+.card-stripe{
+  height:3px;
+  background:linear-gradient(90deg,#4f46e5,#7c3aed,#06b6d4);
+}
+
+.card-inner{padding:32px 28px 28px}
+
+/* heading group */
+.heading{margin-bottom:28px}
+.heading-eyebrow{
+  font-size:10.5px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;
+  color:#4f46e5;margin-bottom:8px;
+}
+.heading-title{
+  font-size:22px;font-weight:700;color:#fff;
+  letter-spacing:-.4px;line-height:1.2;margin-bottom:6px;
+}
+.heading-sub{font-size:13px;color:#4b5563;line-height:1.5}
+
+/* field */
+.field{margin-bottom:16px}
+.field-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.field-label{font-size:12px;font-weight:500;color:#6b7280}
+.field-badge{
+  font-size:10px;font-weight:500;
+  padding:2px 8px;border-radius:20px;
+  background:rgba(79,70,229,0.12);
+  border:1px solid rgba(79,70,229,0.2);
+  color:#818cf8;
+}
+textarea{
+  display:block;width:100%;height:104px;
+  background:#070910;
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;
+  color:#c8d3e0;
+  font-family:var(--mono);font-size:11.5px;line-height:1.65;
+  padding:13px 15px;resize:none;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  caret-color:#4f46e5;
+}
+textarea:focus{
+  border-color:rgba(79,70,229,0.45);
+  box-shadow:0 0 0 4px rgba(79,70,229,0.08),0 1px 3px rgba(0,0,0,0.3) inset;
+}
+textarea::placeholder{color:#1e2533;font-size:11px;line-height:1.6}
+
+/* unlock button */
+.btn{
+  width:100%;padding:14.5px 20px;
+  background:linear-gradient(135deg,#4f46e5 0%,#4338ca 100%);
+  border:none;border-radius:12px;
+  color:#fff;font-family:var(--sans);
+  font-size:14px;font-weight:600;letter-spacing:.1px;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .12s,box-shadow .2s,filter .15s;
+  box-shadow:0 4px 20px rgba(79,70,229,0.45),0 1px 0 rgba(255,255,255,0.08) inset;
+}
+.btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),transparent);
+  pointer-events:none;
+}
+.btn:hover{filter:brightness(1.1);box-shadow:0 6px 28px rgba(79,70,229,0.55),0 1px 0 rgba(255,255,255,0.08) inset}
+.btn:active{transform:scale(.987)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;filter:none}
+
+.btn-inner{display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:1}
+.btn-arrow{
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;transition:transform .2s;
+}
+.btn:hover .btn-arrow{transform:translateX(2px)}
+
+/* ripple */
+.rpl{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,0.18);
+  transform:scale(0);animation:rpl .5s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes rpl{to{transform:scale(4.5);opacity:0}}
+
+/* divider */
+.divider{
+  display:flex;align-items:center;gap:12px;margin:20px 0;
+}
+.divider::before,.divider::after{
+  content:'';flex:1;height:1px;background:rgba(255,255,255,0.05);
+}
+.divider-text{font-size:11px;color:#2d3748;white-space:nowrap}
+
+/* info row */
+.meta-row{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.meta-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#374151}
+.meta-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:#10b981;box-shadow:0 0 5px #10b981;
+  flex-shrink:0;
+}
+.meta-ver{font-size:11px;color:#1f2937}
+
+/* ── footer ── */
+.footer{
+  margin-top:24px;text-align:center;
+  font-size:11px;color:#1a2030;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+}
+.footer a{color:#1f2d40;text-decoration:none}
+
+/* ── iOS Alert ── */
+.overlay{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,0);
+  backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);
+  pointer-events:none;
+  transition:background .28s,backdrop-filter .28s,-webkit-backdrop-filter .28s;
+}
+.overlay.show{
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  pointer-events:all;
+}
+.ios-alert{
+  width:270px;
+  background:rgba(232,232,237,0.92);
+  border-radius:14px;overflow:hidden;
+  transform:scale(1.12);opacity:0;
+  transition:transform .28s cubic-bezier(.34,1.4,.64,1),opacity .2s;
+  box-shadow:0 24px 60px rgba(0,0,0,0.7),0 2px 6px rgba(0,0,0,0.3);
+  -webkit-backdrop-filter:blur(40px) saturate(1.8);
+  backdrop-filter:blur(40px) saturate(1.8);
+}
+.overlay.show .ios-alert{transform:scale(1);opacity:1}
+.ios-body{padding:18px 16px 14px;text-align:center}
+.ios-icon{
+  width:56px;height:56px;border-radius:12px;
+  margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;line-height:1;
+}
+.ios-title{
+  font-family:var(--sans);font-size:17px;font-weight:600;
+  color:#000;margin-bottom:4px;line-height:1.3;
+}
+.ios-msg{
+  font-family:var(--sans);font-size:13px;
+  color:#3c3c43bf;line-height:1.45;
+}
+.ios-sep{height:.5px;background:rgba(60,60,67,0.29)}
+.ios-btns{display:flex}
+.ios-btn{
+  flex:1;padding:12px 8px;
+  background:none;border:none;
+  font-family:var(--sans);font-size:17px;
+  cursor:pointer;transition:background .1s;line-height:1;
+}
+.ios-btn:active{background:rgba(0,0,0,0.1)}
+.ios-cancel{color:#007aff;border-right:.5px solid rgba(60,60,67,0.29)}
+.ios-install{color:#007aff;font-weight:700}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">
+    <div class="brand-icon">🔑</div>
+    <span class="brand-name">SeverKey</span>
+  </div>
+
+  <div class="card">
+    <div class="card-stripe"></div>
+    <div class="card-inner">
+
+      <div class="heading">
+        <div class="heading-eyebrow">Activation Portal</div>
+        <div class="heading-title">Nhập mã kích hoạt</div>
+        <div class="heading-sub">Dán mã của bạn vào bên dưới để tiếp tục</div>
+      </div>
+
+      <div class="field">
+        <div class="field-top">
+          <span class="field-label">Mã kích hoạt</span>
+          <span class="field-badge">Mã hoá AES-256</span>
+        </div>
+        <textarea id="inp"
+          placeholder="Nhập hoặc dán mã kích hoạt vào đây&#10;&#10;Hỗ trợ: URL, token, mã định dạng đặc biệt"
+          spellcheck="false" autocomplete="off" autocorrect="off"></textarea>
+      </div>
+
+      <button class="btn" id="btn" onclick="doUnlock(event)">
+        <div class="btn-inner">
+          <span>Kích hoạt ngay</span>
+          <span class="btn-arrow">▶</span>
+        </div>
+      </button>
+
+      <div class="divider"><span class="divider-text">Bảo mật & An toàn</span></div>
+
+      <div class="meta-row">
+        <div class="meta-item">
+          <div class="meta-dot"></div>
+          <span>Máy chủ hoạt động bình thường</span>
+        </div>
+        <div class="meta-ver">v2.4.1</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>© 2024 SeverKey</span>
+    <a href="#">Điều khoản</a>
+    <a href="#">Hỗ trợ</a>
+  </div>
+
+</div>
+
+<!-- iOS Install Alert -->
+<div class="overlay" id="overlay">
+  <div class="ios-alert">
+    <div class="ios-body">
+      <div class="ios-icon" id="ios-icon" style="background:linear-gradient(145deg,#007aff,#0055cc)">📲</div>
+      <div class="ios-title" id="ios-title">Cài đặt ứng dụng?</div>
+      <div class="ios-msg" id="ios-msg">Muốn cài đặt ứng dụng này lên iPhone không?</div>
+    </div>
+    <div class="ios-sep"></div>
+    <div class="ios-btns">
+      <button class="ios-btn ios-cancel" onclick="closeAlert()">Huỷ</button>
+      <button class="ios-btn ios-install" onclick="doInstall()">Cài đặt</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var _pendingUrl='';
+
+function isBin(s){
+  var g=s.trim().split(/\s+/);
+  return g.length>=4&&g.every(function(b){return /^[01]{8}$/.test(b)});
+}
+function decodeBin(s){
+  return s.trim().split(/\s+/).map(function(b){return String.fromCharCode(parseInt(b,2))}).join('');
+}
+function resolve(raw){
+  var s=raw.trim();
+  if(isBin(s)){try{return decodeBin(s)}catch(e){return s}}
+  return s;
+}
+
+function doUnlock(e){
+  var raw=document.getElementById('inp').value;
+  if(!raw.trim()){
+    var inp=document.getElementById('inp');
+    inp.style.borderColor='rgba(239,68,68,0.5)';
+    inp.style.boxShadow='0 0 0 4px rgba(239,68,68,0.08)';
+    setTimeout(function(){inp.style.borderColor='';inp.style.boxShadow=''},1500);
+    return;
+  }
+  var btn=document.getElementById('btn');
+  /* ripple */
+  var r=document.createElement('span');r.className='rpl';
+  var rc=btn.getBoundingClientRect();var sz=Math.max(btn.offsetWidth,btn.offsetHeight);
+  r.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-rc.left-sz/2)+'px;top:'+(e.clientY-rc.top-sz/2)+'px';
+  btn.appendChild(r);setTimeout(function(){r.remove()},600);
+
+  btn.disabled=true;
+  btn.querySelector('.btn-inner').innerHTML='<span>Đang xử lý...</span>';
+
+  setTimeout(function(){
+    btn.disabled=false;
+    btn.querySelector('.btn-inner').innerHTML='<span>Kích hoạt ngay</span><span class="btn-arrow">▶</span>';
+
+    var url=resolve(raw);
+    _pendingUrl=url;
+
+    if(url.startsWith('itms-services://')){
+      var m=url.match(/url=https?:\/\/[^/?]+\/(?:[^/?]+\/)*([^./?]+)/i);
+      var appName=m?m[1].replace(/[-_]/g,' ').slice(0,24):'App';
+      appName=appName.charAt(0).toUpperCase()+appName.slice(1);
+      document.getElementById('ios-title').textContent='Cài đặt "'+appName+'"?';
+      document.getElementById('ios-msg').textContent='Nhấn Cài đặt để cài ứng dụng này lên iPhone của bạn.';
+      document.getElementById('overlay').classList.add('show');
+    } else if(url.startsWith('http://')||url.startsWith('https://')){
+      window.open(url,'_blank');
+    }
+  },750);
+}
+
+function doInstall(){
+  closeAlert();
+  var a=document.createElement('a');
+  a.href=_pendingUrl;document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+function closeAlert(){document.getElementById('overlay').classList.remove('show')}
+document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)closeAlert()});
+</script>
+</body>
+</html>
